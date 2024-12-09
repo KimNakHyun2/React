@@ -1,0 +1,173 @@
+/****************************************************************************************************************************************************
+index.css
+****************************************************************************************************************************************************/
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.container{
+  width: 100vw;
+  min-height: 100vh;
+  background: #ced8ff;
+
+}
+
+.container.dark{
+  background: #222;
+}
+
+
+/****************************************************************************************************************************************************
+App.jsx
+****************************************************************************************************************************************************/
+
+
+import { useEffect, useState } from 'react';
+import Navbar from './Components/Navbar/Navbar';
+
+const App = () => {
+
+  const current_theme = localStorage.getItem('current_theme');
+  const [theme, setTheme] = useState(current_theme?
+    current_theme : 'light');
+
+    useEffect(()=>{
+      localStorage.setItem('current_theme', theme);
+    }, [theme]);
+
+  return (
+    <div className={`container ${theme}`}>
+      <Navbar theme={theme} setTheme={setTheme}/>
+    </div>
+  )
+}
+
+export default App
+
+
+/****************************************************************************************************************************************************
+Navbar.css
+****************************************************************************************************************************************************/
+.navbar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 15px 7%;
+    transition: 0.5s;
+}
+
+.logo{
+    width: 160px;
+    cursor: pointer;
+}
+
+ul{
+    flex: 1;
+    list-style: none;
+    text-align: center;
+}
+
+ul li{
+    display: inline-block;
+    margin: 10px; 20px;
+    font-size: 18px;
+}
+
+.toggle-icon{
+    width: 50px;
+    cursor: pointer;
+    margin-left: 40px;
+}
+.search-box{
+    display: flex;
+    align-items: center;
+    background: #242424;
+    padding: 2px 20px;
+    border-radius: 50px;
+}
+
+.search-box input{
+    padding: 6px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    font-size: 18px;
+    max-width: 200px;
+}
+
+.search-box input::placeholder{
+    color: #fff;
+}
+
+.search-box img{
+    width: 20px;
+    cursor: pointer;
+}
+.dark .navbar {
+    background: #000;
+    color: #fff;
+}
+
+.dark .search-box{
+    background:#fff;
+}
+.dark .search-box input{
+    color: #222;
+}
+.dark .search-box input::placeholder{
+    color: #222;
+}
+
+
+
+
+/****************************************************************************************************************************************************
+Navbar.jsx
+****************************************************************************************************************************************************/
+import toggle_dark from "../../assets/day.png";
+import logo_light from "../../assets/logo-black.png";
+import logo_dark from "../../assets/logo-white.png";
+import toggle_light from "../../assets/night.png";
+import search_icon_dark from "../../assets/search-b.png";
+import search_icon_light from "../../assets/search-w.png";
+import "./Navbar.css";
+
+const Navbar = ({theme, setTheme}) => {
+  const toggle_mode = () => {
+    theme =='light'?setTheme('dark'):setTheme('light');
+  }
+  
+  return (
+    <div className="navbar">
+        <img src={theme =='light'?logo_light:logo_dark} alt="" className="logo"/>
+
+        <ul>
+            <li>Home</li>
+            <li>Products</li>
+            <li>Features</li>
+            <li>About</li>
+        </ul>
+
+        <div className="search-box">
+            <input type="text" placeholder="Search"/>
+            <img src={theme =='light'?search_icon_light:search_icon_dark} alt="" />
+        </div>
+
+        <img onClick={()=>{toggle_mode()}} src={theme =='light'?toggle_light:toggle_dark} alt="" className="toggle-icon"/>
+    </div>
+  )
+}
+
+export default Navbar
+
+
+/****************************************************************************************************************************************************
+참고주소: https://www.youtube.com/watch?v=5mO-T2o9zuk&t=899s
+****************************************************************************************************************************************************/
